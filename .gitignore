@@ -1,0 +1,34 @@
+# Environments
+.env
+.env.local
+.env.*
+!.env.example
+
+# Python
+backend/venv/
+backend/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.npm
+*.log
+
+# Sensitive Data / Service Accounts
+backend/serviceAccountKey.json
+
+# User Uploads / Generated Content
+backend/uploads/
+backend/models/
+backend/test_*.py
+backend/inspect_hf_*.py
+backend/api.json
+backend/trellis_api.json
+backend/search_hf.py
+
+# OS Files
+.DS_Store
+Thumbs.db
