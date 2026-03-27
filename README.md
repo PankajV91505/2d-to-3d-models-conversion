@@ -135,7 +135,17 @@ API runs on `http://localhost:8000`
 
 ## 📸 Screenshots
 
-> Dashboard with 3D model viewer showing interactive rotation, zoom, and download controls.
+### 🌞 Landing Page (Light Mode)
+![Landing Page Light](docs/screenshots/landing-light.png)
+
+### 🌙 Landing Page (Dark Mode)
+![Landing Page Dark](docs/screenshots/landing-dark.png)
+
+### 💎 Pricing Page
+![Pricing](docs/screenshots/pricing.png)
+
+### 🚀 Dashboard
+![Dashboard](docs/screenshots/dashboard.png)
 
 ---
 
