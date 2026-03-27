@@ -1,108 +1,150 @@
-# 2D to 3D Image Conversion SaaS
+<div align="center">
 
-A full-stack web application that allows users to upload 2D images and automatically generate 3D models using AI (powered by Hugging Face Spaces). This platform includes authentication, credit-based usage tracking, subscription tiers, and an interactive 3D model viewer.
+# 🧊 3DForge — AI-Powered 2D to 3D Model Converter
 
-## 🚀 Features
+[![Live Demo](https://img.shields.io/badge/Live-Demo-6366f1?style=for-the-badge&logo=vercel)](https://github.com/PankajV91505/2d-to-3d-models-conversion)
+[![React](https://img.shields.io/badge/React-Vite-61DAFB?style=for-the-badge&logo=react)](https://vitejs.dev)
+[![FastAPI](https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
+[![Firebase](https://img.shields.io/badge/Auth-Firebase-FFCA28?style=for-the-badge&logo=firebase)](https://firebase.google.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 
-* **Authentication:** Secure user login and signup using Firebase Authentication.
-* **Image to 3D Generation:** Upload a 2D image (JPG, PNG) and receive a downloadable 3D model (.glb or .obj).
-* **Interactive 3D Viewer:** Preview the generated 3D models directly in the browser with zoom, pan, and rotate controls.
-* **Credit System:** Users spend credits to generate 3D models.
-* **Subscription Tiers:** Free, Pro, and Enterprise tiers with different credit allowances and features.
-* **Responsive Dashboard:** A clean, modern UI for managing generations, viewing history, and upgrading plans.
-* **Multi-Model Fallback:** The backend dynamically falls back to alternative AI models if one is overloaded.
+**Upload any 2D image → Get a downloadable, interactive 3D model in seconds, powered by AI!**
+
+</div>
+
+---
+
+## ✨ Features
+
+| Feature | Details |
+|---|---|
+| 🔐 **Authentication** | Secure login/signup via Firebase Auth |
+| 🖼️ **AI 3D Generation** | Upload a JPG/PNG and receive a `.glb` or `.obj` 3D model |
+| 🎮 **Interactive 3D Viewer** | Rotate, zoom, and pan the model directly in your browser (powered by Three.js) |
+| 💳 **Credit System** | Each generation costs 1 credit; credits refill on plan upgrades |
+| 💎 **Subscription Tiers** | Free, Plus, and Premium plans with different credit limits |
+| 🤖 **Multi-Model Fallback** | Automatically tries multiple Hugging Face AI Spaces (colored meshes first, untextured as fallback) |
+| 📥 **Download Models** | Download the generated `.glb`/`.obj` file directly |
+| 🌗 **Dark / Light Mode** | Seamless theme toggle across the entire app |
+
+---
 
 ## 🛠️ Technology Stack
 
-**Frontend:**
-* React (Vite)
-* Tailwind CSS (for styling and responsiveness)
-* React Three Fiber & Drei (for the 3D model viewer)
-* Firebase Auth (Authentication)
-* Lucide React (Icons)
+**Frontend**
+- [React](https://react.dev) + [Vite](https://vitejs.dev)
+- [Tailwind CSS v4](https://tailwindcss.com) — Utility-first styling
+- [@react-three/fiber](https://docs.pmnd.rs/react-three-fiber) & [@react-three/drei](https://github.com/pmndrs/drei) — 3D viewer
+- [Firebase Auth](https://firebase.google.com/docs/auth) — Authentication
+- [Lucide React](https://lucide.dev) — Icons
+- [React Hot Toast](https://react-hot-toast.com) — Notifications
 
-**Backend:**
-* Python
-* FastAPI (High-performance API framework)
-* Firebase Admin SDK (Firestore Database & Auth verification)
-* Gradio Client (To communicate with Hugging Face AI Spaces)
-* HTTPX (For downloading generated assets)
+**Backend**
+- [FastAPI](https://fastapi.tiangolo.com) — High-performance Python API
+- [Firebase Admin SDK](https://firebase.google.com/docs/admin/setup) — Firestore DB & token verification
+- [Gradio Client](https://www.gradio.app/docs/python-client) — Communicates with Hugging Face AI models
+- [HTTPX](https://www.python-httpx.org) — Async HTTP for downloading generated 3D assets
+
+---
+
+## 🤖 AI Model Fallback Strategy
+
+The backend dynamically tries multiple Hugging Face Spaces in priority order:
+
+1. **TencentARC/Trellis-demo** — Colored textured meshes
+2. **stabilityai/TripoSR** — Vertex-colored meshes
+3. **ashawkey/LGM** — Colored models
+4. **merve/daggr-image-to-3d** — Colored meshes
+5. **frogleo/Image-to-3D** — White mesh (always-available fallback)
+
+> ⚠️ Free public spaces can sleep due to GPU limits on Hugging Face. If colorful models are sleeping, the app gracefully falls back so generation never fully breaks.
+
+---
 
 ## 🏗️ Project Structure
 
 ```
 3D-Image-Conversion/
-├── frontend/             # React + Vite application
+├── frontend/                   # React + Vite application
 │   ├── src/
-│   │   ├── components/   # Reusable UI components (Navbar, ModelViewer, etc.)
-│   │   ├── contexts/     # React contexts (AuthContext)
-│   │   ├── pages/        # Main pages (Landing, Login, Dashboard, Pricing)
-│   │   └── App.jsx       # Routing and main app layout
+│   │   ├── components/         # Navbar, ModelViewer, ImageUpload, etc.
+│   │   ├── context/            # AuthContext, ThemeContext
+│   │   ├── pages/              # Landing, Login, Signup, Dashboard, Pricing
+│   │   └── App.jsx             # Routes
 │   └── package.json
 │
-└── backend/              # FastAPI Python server
+└── backend/                    # FastAPI Python server
     ├── app/
-    │   ├── middleware/   # JWT Token verification middleware
-    │   ├── routes/       # API endpoints (auth.py, convert.py, credits.py)
-    │   ├── config.py     # Environment variables/configuration
-    │   └── main.py       # FastAPI application entry point
-    ├── requirements.txt
-    └── .env              # Backend environment variables
+    │   ├── middleware/          # Firebase JWT verification
+    │   ├── routes/             # convert.py, upgrade.py
+    │   ├── config.py           # Env var configuration
+    │   └── main.py             # FastAPI entry point
+    ├── models/                 # Generated 3D model files (gitignored)
+    ├── uploads/                # Temp image uploads (gitignored)
+    └── requirements.txt
 ```
+
+---
 
 ## ⚙️ Local Development Setup
 
-### 1. Prerequisites
-* Node.js (v18+)
-* Python (3.10+)
-* A Firebase Project (with Authentication and Firestore enabled)
-* A Hugging Face account (optional, but recommended for API tokens)
+### Prerequisites
+- Node.js v18+
+- Python 3.10+
+- A [Firebase Project](https://console.firebase.google.com) with **Authentication** and **Firestore** enabled
+- (Optional) A [Hugging Face](https://huggingface.co) account for API token
 
-### 2. Firebase Configuration
-1. Go to the [Firebase Console](https://console.firebase.google.com/).
-2. Create a web app and copy the config object into `frontend/.env`.
-3. Go to Project Settings > Service Accounts and generate a new private key.
-4. Save the downloaded JSON file as `backend/serviceAccountKey.json`.
+### 1. Clone the Repository
+```bash
+git clone https://github.com/PankajV91505/2d-to-3d-models-conversion.git
+cd 2d-to-3d-models-conversion
+```
+
+### 2. Firebase Setup
+1. Go to the [Firebase Console](https://console.firebase.google.com).
+2. Create a web app and copy the config into `frontend/src/config/firebase.config.js`.
+3. Go to **Project Settings → Service Accounts** and generate a new private key.
+4. Save the downloaded JSON as `backend/serviceAccountKey.json`.
 
 ### 3. Frontend Setup
 ```bash
 cd frontend
 npm install
-
-# Create an .env file based on .env.example
-# Add your VITE_FIREBASE_* variables
-
 npm run dev
 ```
-The frontend will run on `http://localhost:5173`.
+Runs on `http://localhost:5173`
 
 ### 4. Backend Setup
 ```bash
 cd backend
 python -m venv venv
-
-# Activate the virtual environment
-# On Windows:
-venv\Scripts\activate
-# On macOS/Linux:
-source venv/bin/activate
+venv\Scripts\activate       # Windows
+# source venv/bin/activate  # macOS/Linux
 
 pip install -r requirements.txt
 
-# Create a .env file
-# Add FIREBASE_SERVICE_ACCOUNT_KEY=serviceAccountKey.json
+# Create .env file:
+# FIREBASE_SERVICE_ACCOUNT_KEY=./serviceAccountKey.json
+# HF_TOKEN=your_huggingface_token   (optional)
 
-python -m uvicorn app.main:app --reload --port 8000
+uvicorn app.main:app --reload --port 8000
 ```
-The backend API will run on `http://localhost:8000`.
+API runs on `http://localhost:8000`
 
-## 🤖 Hugging Face AI Integration
+---
 
-This project connects to public Hugging Face Spaces via the `gradio_client` library. 
-To change the primary AI model being used, update the `HF_SPACE_ID` variable in `backend/.env` (or modify `convert.py` directly). 
+## 📸 Screenshots
 
-*Note: Free public spaces are subject to rate limits and queue times. For production, a paid API or dedicated GPU is highly recommended.*
+> Dashboard with 3D model viewer showing interactive rotation, zoom, and download controls.
+
+---
 
 ## 📜 License
 
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+<div align="center">
+Made with ❤️ by <a href="https://github.com/PankajV91505">PankajV91505</a>
+</div>
